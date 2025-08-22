@@ -1,43 +1,50 @@
-const pageInput = document.getElementById("PageInput")
-const searchBtn = document.getElementById("searchBtn")
+const pageInput = document.getElementById("pageInput")
+const searchbtn = document.getElementById("searchbtn")
 const resultsDiv = document.getElementById("results")
+//const passbtn = document.getElementById("passbtn")
 
 async function fetchCharacters(page){
-    resultsDiv.innerHTML = "<p>Carregando...</p>"
+    resultsDiv.innerHTML = "<p>carregando...</p>"
+
     try{
         const response = await fetch(`https://rickandmortyapi.com/api/character?page=${page}`)
         const data = await response.json()
-        // console.log(data)
+       // console.log(data)
 
-        if(data.error){
-            resultsDiv.innerHTML = "<p>Pagina invalida! tente outra (1/42) </p>"
-            return
-        }
-        resultsDiv.innerHTML = ""
-        data.results.forEach(character => {
+       if (data.error){
+        resultsDiv.innerHTML = "<p>Pagina invalida! Tente outra. (1/42)</p>"
+        return
+       }
+       resultsDiv.innerHTML = ""
+       data.results.forEach(character=>{
             const card = document.createElement("div")
             card.className = "card"
             card.innerHTML = `
-            <img src="${character.image}" alt="${character.name}">
+            <img src="${character.image}"alt="${character.name}">
             <h3>${character.name}</h3>
-            <p><strong>Status: </strong>${character.status}</p>
-            <p><strong>Especie: </strong>${character.species}</p>
+            <p><strong>status:</strong>${character.status}<p/>
+            <p><strong>espécie:</strong>${character.species}<p/>
             `
+
             resultsDiv.appendChild(card)
-        })
-
-    } catch (error) {
-        // console.log("deu ruim")
-        resultsDiv.innerHTML = "<p>Erro ao buscar personagens!!! </p>"
-
+       })
+    }catch(error){
+      //  console.log("deu ruim")
+      resultsDiv.innerHTML = "<p>Erro ao buscar personagem!!!</p>"
     }
 }
-searchBtn.addEventListener("click", () => {
+searchbtn.addEventListener("click",()=>{
     const page = pageInput.value.trim()
     if(page){
         fetchCharacters(page)
-    }else{
-        resultsDiv.innerHTML = "<p>Digite um numero de pagina</p>"
-    }
+     }else{
+        resultsDiv.innerHTML = "<p>digite um número de página </p>"
+     }
 })
+//passbtn.addEventListener("click",
+ //  if (page){
+      //   fetchCharacters(page)
+ //   }
+//})
+
 fetchCharacters(1)
